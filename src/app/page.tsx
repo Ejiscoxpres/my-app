@@ -21,7 +21,8 @@ export default function Home() {
           console.log(formData);
       })}
       >
-      <input {...register("prompt", { required: true })} />
+      <input className='text-black'
+      {...register("prompt", { required: true })} />
       {errors.prompt && <span>This field is required</span>}
       
 
