@@ -1,8 +1,11 @@
 'use client';
 
+import { api } from '@/convex/_generated/api';
+import { useMutation } from 'convex/react';
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
+  const saveSketchMutation = useMutation(api.sketches.saveSketch);
 
   const {
     register,
@@ -19,6 +22,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <form onSubmit={handleSubmit((formData) => {
           console.log(formData);
+          saveSketchMutation(formData);
       })}
       >
       <input className='text-black'
