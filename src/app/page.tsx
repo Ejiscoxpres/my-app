@@ -1,3 +1,5 @@
+'use client';
+
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
@@ -20,7 +22,6 @@ export default function Home() {
       })}
       >
       <input {...register("prompt", { required: true })} />
-      <input {...register("exampleRequired", { required: true })} />
       {errors.prompt && <span>This field is required</span>}
       
 
