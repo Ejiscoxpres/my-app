@@ -20,12 +20,14 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <form onSubmit={handleSubmit((formData) => {
-          console.log(formData);
-          saveSketchMutation(formData);
+      <form onSubmit={handleSubmit( async (formData) => {
+      
+        const results = await  saveSketchMutation(formData);
+        console.log(results);
+        
       })}
       >
-      <input className='text-black'
+      <input className=' text-black'
       {...register("prompt", { required: true })} />
       {errors.prompt && <span>This field is required</span>}
       
