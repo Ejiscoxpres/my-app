@@ -32,10 +32,10 @@ export default function Home() {
       <form onSubmit={handleSubmit( async (formData) => {
       
       className="flex flex-col gap-2 w-1/4"
-      onSubmit={handleSubmit(async (formData) => {
+      onsubmit={handleSubmit(async: any (formData) => {
         if (!canvasRef.current) return;
         const image = await canvasRef.current.exportImage("jpeg");
-        await saveSketchMutation({ ...formData, image });
+        await saveSketchMutation({ ...FormData, Image });
       })}
       >
 
@@ -55,6 +55,6 @@ export default function Home() {
       <input type="submit" />
     </form>
     </main>
-  );
+  )
 }
 
