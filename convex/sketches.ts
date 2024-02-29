@@ -1,16 +1,21 @@
 
-import { Id } from './_generated/dataModel';
-import { internalAction, internalMutation, mutation, query } from './_generated/server';
-import Replicate from "replicate";
+
+import {  
+    internalMutation,
+    mutation,
+    query }
+from './_generated/server';
+
 
 export const saveSketch = mutation(
-     async ({ db }, { prompt, image}: {prompt: string, image: any }) => {
+     async ({ db, scheduler }, { prompt, image}: {prompt: string; image: string }) => {
+
        const sketch = await db.insert("sketches",{
             prompt,
            
         })
 
-        await scheduler.runAfter(0, sketches:generate, {
+        await scheduler.runAfter (0, "generate:generate", {
             sketchId: sketch.id,
             prompt,
             image,
@@ -19,55 +24,29 @@ export const saveSketch = mutation(
       
     
     
-    return{
-        message:'success',
-    }
+    return sketch;
 }
 );
 
-export const generate = internalAction(
-    async(
-        {
-            runMutation
-        }, 
-        {   prompt, 
-            image,
-            sketchId}: 
-        {sketchId:string; prompt: string; image: string}) => {
-
-const replicate = new Replicate({
-    auth: process.env.REPLICATE_API_TOKEN!,
-});
-
-const output = await replicate.run(
-  "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
-  {
-    input: {
-        image,
-        prompt,
-        scale:7,
-        image_resolution:'523',
-        n_prompt:
-        "bad anatomy, bad hands, lowres, longbody, extra digits, missing fingers, cropped, worst quality, low quality,fewer digits"
-    }
-  }
-);
-
-runMutation(sketches:updateSketchResult, {
-    sketchId,
-    results: output[1]
+export const getSketch = query (({db}, {sketchId}) => {
+    return db.get(new Id ("sketches", sketchId))
 })
-    console.log('hello world', {sketchId, prompt, image  });
-    
-}
-);
 
-export const updateSketchResult = internalMutation(({db}, {sketchid, result}: {sketchId: Id<string>; result:string}) => {
-    await db.patch(sketchid, {
+
+export const updateSketchResult = internalMutation(async (
+    {db},
+     {sketchId, result}: 
+     {sketchId:string; result:string}) => {
+
+        const id = new Id("sketches", sketchId);
+        console.log("id",id);
+        
+    await db.patch(id, {
         result,
-    })
+    });
 
-})
+}
+);
 
 export const getSketches = query(async ({db}) => {
     const sketches = await db.query("sketches").collect();

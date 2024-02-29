@@ -8,13 +8,14 @@ import { useForm } from 'react-hook-form';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 
 export default function Home() {
-  const saveSketchMutation = useMutation(api.sketches.saveSketch);
+
+  const saveSketchMutation = useMutation("sketches:saveSketch");
+
   const sketchesQuery = useQuery(api.sketches.getSketches);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } =  useForm<{
     prompt: string;

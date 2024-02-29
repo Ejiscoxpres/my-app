@@ -2,13 +2,15 @@
 
 
 import { useQuery } from 'convex/react';
-import { useMutation } from '../../convex/_generated/react';
+import { useMutation } from '@/convex/_generated/react';
 import { api } from '@/convex/_generated/api';
 
 
 export default function Home() {
-  const saveSketchMutation = useMutation("sketches: saveSketch");
+  const saveSketchMutation = useMutation("sketches:saveSketch");
+
   const sketches = useQuery(api.sketches.getSketches);
+
   const sortedSketches = (sketches ?? []).sort((a, b) => {
     return b._creationTime - a._creationTime;
   });
